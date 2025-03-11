@@ -1,19 +1,13 @@
 package com.assignment.smartpark.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "parking")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "vehicle")
 public class Vehicle {
 
     @Id
-    private String lisencePlate;
+    private String licensePlate;
 
     private String type;
 
@@ -21,11 +15,34 @@ public class Vehicle {
 
     @ManyToOne
     @JoinColumn(name = "parking_id")
-    private Parking parkingLot;
+    private Parking parking;
 
-    public Vehicle(String lisencePlate, String type, String ownerName) {
-        this.lisencePlate = lisencePlate;
+    public Vehicle(String licensePlate, String type, String ownerName) {
+        this.licensePlate = licensePlate;
         this.type = type;
         this.ownerName = ownerName;
+    }
+
+    public Vehicle() {
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public Parking getParking() {
+        return parking;
+    }
+
+    public void setParking(Parking parking) {
+        this.parking = parking;
     }
 }

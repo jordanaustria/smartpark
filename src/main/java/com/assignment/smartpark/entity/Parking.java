@@ -1,18 +1,13 @@
 package com.assignment.smartpark.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "parking")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Parking {
 
     @Id
@@ -27,12 +22,44 @@ public class Parking {
     private int occupied = 0;
 
     @OneToMany(mappedBy = "parking", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Vehicle> parkedVehicles;
 
     public Parking(String location, int capacity, int occupiedSpaces) {
         this.location = location;
         this.capacity = capacity;
         this.occupied = occupiedSpaces;
+    }
+
+    public Parking() {
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<Vehicle> getParkedVehicles() {
+        return parkedVehicles;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(int occupied) {
+        this.occupied = occupied;
     }
 
     public Parking(UUID id, String location, int capacity, int occupied) {

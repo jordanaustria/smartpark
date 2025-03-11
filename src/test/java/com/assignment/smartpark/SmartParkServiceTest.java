@@ -43,7 +43,7 @@ class SmartParkServiceTest {
     void setUp() {
         parkingLotId = UUID.randomUUID();
         parking = new Parking(parkingLotId, "Downtown", 10, 0);
-        vehicle = new Vehicle("ABC-123", "Car", "Jordan Austria", null);
+        vehicle = new Vehicle("ABC-123", "Car", "Jordan Austria");
     }
 
     @Test
@@ -70,9 +70,9 @@ class SmartParkServiceTest {
     @Test
     void testCheckInVehicle_Success() {
         when(vehicleRepository.findByLicensePlate("ABC-123")).thenReturn(Optional.of(vehicle));
-        when(parkingLotRepository.findById(parkingLotId)).thenReturn(Optional.of(parking));
+        when(parkingLotRepository.findByLocation(parking.getLocation())).thenReturn(Optional.of(parking));
         
-        String response = service.checkInVehicle("ABC-123", parkingLotId);
+        String response = service.checkInVehicle("ABC-123", parking.getLocation());
         
         assertEquals("Vehicle ABC-123 checked into parking lot Downtown", response);
         assertEquals(1, parking.getOccupied());
@@ -84,14 +84,14 @@ class SmartParkServiceTest {
         when(vehicleRepository.findByLicensePlate("ABC-123")).thenReturn(Optional.of(vehicle));
         when(parkingLotRepository.findById(parkingLotId)).thenReturn(Optional.of(parking));
         
-        Exception exception = assertThrows(RuntimeException.class, () -> service.checkInVehicle("ABC-123", parkingLotId));
+        Exception exception = assertThrows(RuntimeException.class, () -> service.checkInVehicle("ABC-123", parking.getLocation()));
         
         assertEquals("Parking lot is full!", exception.getMessage());
     }
 
     @Test
     void testCheckOutVehicle_Success() {
-        vehicle.setParkingLot(parking);
+        vehicle.setParking(parking);
         parking.setOccupied(5);
         when(vehicleRepository.findByLicensePlate("ABC-123")).thenReturn(Optional.of(vehicle));
         

@@ -1,12 +1,5 @@
 package com.assignment.smartpark.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ParkinglotRequest {
 
     private String location;
@@ -14,4 +7,30 @@ public class ParkinglotRequest {
     private int capacity;
 
     private int occupiedSpaces;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public int getOccupiedSpaces() {
+        return occupiedSpaces;
+    }
+
+    public ParkinglotRequest(String location, int capacity, int occupiedSpaces) {
+        this.location = location;
+        this.capacity = capacity;
+        this.occupiedSpaces = occupiedSpaces;
+    }
+
+    public void setOccupiedSpaces(int occupiedSpaces) {
+        this.occupiedSpaces = occupiedSpaces;
+    }
 }

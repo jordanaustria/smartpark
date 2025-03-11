@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("smartpark")
 public class SmartParkController {
@@ -34,9 +33,14 @@ public class SmartParkController {
     }
 
     @PutMapping("/checkin/vehicle")
-    public String checkInVehicle(@RequestParam String licensePlate, @RequestParam String parkingLocation) {
-        return service.checkInVehicle(licensePlate, UUID.fromString(parkingLocation));
+    public ResponseEntity<String> checkInVehicle(@RequestParam String licensePlate, @RequestParam String parkingLocation) {
+        try {
+            return ResponseEntity.ok(service.checkInVehicle(licensePlate, parkingLocation));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid UUID format for parkingLocation: " + parkingLocation);
+        }
     }
+
 
     @PutMapping("/checkout/vehicle")
     public String checkOutVehicle(@RequestParam String licensePlate) {
@@ -52,5 +56,4 @@ public class SmartParkController {
     public int getAvailableSpaces(@RequestParam String location) {
         return service.getAvailableSpaces(location);
     }
-
 }

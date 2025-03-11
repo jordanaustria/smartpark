@@ -1,12 +1,5 @@
 package com.assignment.smartpark.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class VehicleRequest {
 
     private String licensePlate;
@@ -15,4 +8,21 @@ public class VehicleRequest {
 
     private String ownerName;
 
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public VehicleRequest(String licensePlate, String type, String ownerName) {
+        this.licensePlate = licensePlate;
+        this.type = type;
+        this.ownerName = ownerName;
+    }
 }

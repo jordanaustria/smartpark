@@ -57,24 +57,28 @@ public class SmartParkService {
 
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         return new VehicleResponse(
-                savedVehicle.getLisencePlate(),
+                savedVehicle.getLicensePlate(),
                 savedVehicle.getType(),
                 savedVehicle.getOwnerName()
         );
     }
 
-    public String checkInVehicle(String plateNumber, UUID parkingLotId) {
+    public String checkInVehicle(String plateNumber, String parkingLocation) {
         Vehicle vehicle = vehicleRepository.findByLicensePlate(plateNumber)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        Parking parkingLot = parkinglotRepository.findById(parkingLotId)
+        if (vehicle.getParking() != null) {
+            return "Vehicle " + plateNumber + " is already parked in parking lot " + vehicle.getParking().getLocation();
+        }
+
+        Parking parkingLot = parkinglotRepository.findByLocation(parkingLocation)
                 .orElseThrow(() -> new RuntimeException("Parking Lot not found"));
 
         if (parkingLot.isFull()) {
             throw new RuntimeException("Parking lot is full!");
         }
 
-        vehicle.setParkingLot(parkingLot);
+        vehicle.setParking(parkingLot);
         parkingLot.parkVehicle();
         vehicleRepository.save(vehicle);
         parkinglotRepository.save(parkingLot);
@@ -87,13 +91,13 @@ public class SmartParkService {
         Vehicle vehicle = vehicleRepository.findByLicensePlate(plateNumber)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        Parking parkingLot = vehicle.getParkingLot();
+        Parking parkingLot = vehicle.getParking();
         if (parkingLot == null) {
             throw new RuntimeException("Vehicle is not parked in any lot");
         }
 
         parkingLot.removeVehicle();
-        vehicle.setParkingLot(null);
+        vehicle.setParking(null);
         vehicleRepository.save(vehicle);
         parkinglotRepository.save(parkingLot);
 
