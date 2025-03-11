@@ -1,5 +1,5 @@
 # smartpark
-Notes: I'm having issues on lombok, thus make a generated getters, setters and constructors which compromised code clean and readibility
+Notes: I'm having issues with Lombok, so I had to generate getters, setters, and constructors manually, which compromised code cleanliness and readability.
 
 1. you must first register a vehicle and parking lot
    endpoints:
